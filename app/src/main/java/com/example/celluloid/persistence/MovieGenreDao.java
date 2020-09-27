@@ -6,7 +6,7 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
-import com.example.celluloid.requests.responses.Genre;
+import com.example.celluloid.requests.responses.genre.Genre;
 
 import java.util.List;
 
@@ -18,4 +18,5 @@ public interface MovieGenreDao {
 
     @Query("SELECT * FROM genre")
     public LiveData<List<Genre>> loadAllGenre();
+
 }

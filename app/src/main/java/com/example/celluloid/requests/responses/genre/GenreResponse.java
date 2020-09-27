@@ -1,4 +1,4 @@
-package com.example.celluloid.requests.responses;
+package com.example.celluloid.requests.responses.genre;
 
 
 import java.util.List;

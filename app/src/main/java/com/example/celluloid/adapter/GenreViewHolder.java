@@ -7,16 +7,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.celluloid.R;
-import com.example.celluloid.requests.responses.Genre;
+import com.example.celluloid.requests.responses.genre.Genre;
 
 public class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     TextView tvGenre;
     OnGenreListener onGenreListener;
 
-    public GenreViewHolder(@NonNull View itemView, TextView tvGenre, OnGenreListener onGenreListener) {
+    public GenreViewHolder(@NonNull View itemView, OnGenreListener onGenreListener) {
         super(itemView);
-        this.tvGenre = itemView.findViewById(R.id.tv_genre_name);
+        this.tvGenre = itemView.findViewById(R.id.tv_genre);
         this.onGenreListener = onGenreListener;
         itemView.setOnClickListener(this);
     }

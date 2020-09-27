@@ -10,7 +10,7 @@ import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.celluloid.repositories.TmDbRepository;
-import com.example.celluloid.requests.responses.Genre;
+import com.example.celluloid.requests.responses.genre.Genre;
 import com.example.celluloid.util.Resource;
 
 import java.util.List;

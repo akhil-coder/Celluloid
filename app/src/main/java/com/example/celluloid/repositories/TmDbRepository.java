@@ -11,8 +11,10 @@ import com.example.celluloid.persistence.MovieGenreDao;
 import com.example.celluloid.persistence.TmDbDatabase;
 import com.example.celluloid.requests.ApiResponse;
 import com.example.celluloid.requests.ServiceGenerator;
-import com.example.celluloid.requests.responses.Genre;
-import com.example.celluloid.requests.responses.GenreResponse;
+import com.example.celluloid.requests.responses.genre.Genre;
+import com.example.celluloid.requests.responses.genre.GenreResponse;
+import com.example.celluloid.requests.responses.movies.MovieDetails;
+import com.example.celluloid.requests.responses.movies.MovieDiscoverResponse;
 import com.example.celluloid.util.AppExecutors;
 import com.example.celluloid.util.Constants;
 import com.example.celluloid.util.NetworkBoundResource;
@@ -36,13 +38,38 @@ public class TmDbRepository {
         this.movieGenreDao = TmDbDatabase.getInstance(context).getMovieGenreDao();
     }
 
+    public LiveData<Resource<List<MovieDetails>>> getMovieDetails(final int genre) {
+        return new NetworkBoundResource<List<MovieDetails>, MovieDiscoverResponse>(AppExecutors.getInstance()) {
+            @Override
+            protected void saveCallResult(@NonNull MovieDiscoverResponse item) {
+
+            }
+
+            @Override
+            protected boolean shouldFetch(@Nullable List<MovieDetails> data) {
+                return false;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<List<MovieDetails>> loadFromDb() {
+                return null;
+            }
+
+            @NonNull
+            @Override
+            protected LiveData<ApiResponse<MovieDiscoverResponse>> createCall() {
+                return ServiceGenerator.getTMDbApi().discoverMoviesList(Constants.api_key, genre);
+            }
+        }.getAsLiveData();
+    }
+
     public LiveData<Resource<List<Genre>>> getGenreList() {
-        return new NetworkBoundResource<List<Genre>, GenreResponse>(AppExecutors.getInstance()){
+        return new NetworkBoundResource<List<Genre>, GenreResponse>(AppExecutors.getInstance()) {
 
             @Override
             protected void saveCallResult(@NonNull GenreResponse item) {
-                if(item.getGenreList() != null) {
-                    Log.d(TAG, "saveCallResult: " + item.getGenreList().get(0).toString());
+                if (item.getGenreList() != null) {
                     Genre[] genres = new Genre[item.getGenreList().size()];
                     movieGenreDao.insertGenre(item.getGenreList().toArray(genres));
                 }
@@ -50,7 +77,7 @@ public class TmDbRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<Genre> data) {
-                return true;
+                return false;
             }
 
             @NonNull

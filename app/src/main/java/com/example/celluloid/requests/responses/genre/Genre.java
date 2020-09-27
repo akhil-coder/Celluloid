@@ -1,4 +1,4 @@
-package com.example.celluloid.requests.responses;
+package com.example.celluloid.requests.responses.genre;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
@@ -32,6 +32,9 @@ public class Genre {
     public Genre(String name, int id) {
         this.name = name;
         this.id = id;
+    }
+
+    public Genre() {
     }
 
     @Override
