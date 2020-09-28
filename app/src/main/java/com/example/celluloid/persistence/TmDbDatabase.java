@@ -1,7 +1,6 @@
 package com.example.celluloid.persistence;
 
 import android.content.Context;
-import android.content.Entity;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -11,9 +10,9 @@ import androidx.room.TypeConverters;
 import com.example.celluloid.requests.responses.genre.Genre;
 import com.example.celluloid.requests.responses.movies.MovieDetails;
 
-@Database(entities = {Genre.class, MovieDetails.class}, version = 2)
-@TypeConverters({Converters.class})
-public abstract class TmDbDatabase extends RoomDatabase {
+ @Database(entities = {Genre.class, MovieDetails.class}, version = 4)
+ @TypeConverters({Converters.class})
+ public abstract class TmDbDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "tmdb_database";
     public static TmDbDatabase instance;
 
@@ -22,9 +21,11 @@ public abstract class TmDbDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     TmDbDatabase.class, DATABASE_NAME).fallbackToDestructiveMigration().build();
         }
-    return instance;
+        return instance;
     }
 
     public abstract MovieGenreDao getMovieGenreDao();
 
-}
+    public abstract MovieDetailsDao getMovieDetailsDao();
+
+ }

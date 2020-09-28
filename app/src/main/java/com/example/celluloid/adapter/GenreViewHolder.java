@@ -13,7 +13,7 @@ public class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     TextView tvGenre;
     OnGenreListener onGenreListener;
-
+    int mGenreId;
     public GenreViewHolder(@NonNull View itemView, OnGenreListener onGenreListener) {
         super(itemView);
         this.tvGenre = itemView.findViewById(R.id.tv_genre);
@@ -23,10 +23,11 @@ public class GenreViewHolder extends RecyclerView.ViewHolder implements View.OnC
 
     public void onBind(Genre genre) {
         tvGenre.setText(genre.getName());
+        mGenreId = genre.getId();
     }
 
     @Override
     public void onClick(View v) {
-        onGenreListener.onGenreClick(tvGenre.getText().toString());
+        onGenreListener.onGenreClick(mGenreId);
     }
 }

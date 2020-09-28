@@ -2,6 +2,7 @@ package com.example.celluloid.requests.responses.genre;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "genre")
@@ -34,6 +35,7 @@ public class Genre {
         this.id = id;
     }
 
+    @Ignore
     public Genre() {
     }
 

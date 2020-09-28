@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 
+import com.example.celluloid.persistence.MovieDetailsDao;
 import com.example.celluloid.persistence.MovieGenreDao;
 import com.example.celluloid.persistence.TmDbDatabase;
 import com.example.celluloid.requests.ApiResponse;
@@ -26,6 +27,7 @@ public class TmDbRepository {
     private static final String TAG = "TmDbRepository";
     private static TmDbRepository instance;
     private MovieGenreDao movieGenreDao;
+    private MovieDetailsDao movieDetailsDao;
 
     public static TmDbRepository getInstance(Context context) {
         if (instance == null) {
@@ -36,30 +38,34 @@ public class TmDbRepository {
 
     public TmDbRepository(Context context) {
         this.movieGenreDao = TmDbDatabase.getInstance(context).getMovieGenreDao();
+        this.movieDetailsDao = TmDbDatabase.getInstance(context).getMovieDetailsDao();
     }
 
     public LiveData<Resource<List<MovieDetails>>> getMovieDetails(final int genre) {
         return new NetworkBoundResource<List<MovieDetails>, MovieDiscoverResponse>(AppExecutors.getInstance()) {
             @Override
             protected void saveCallResult(@NonNull MovieDiscoverResponse item) {
-
+            if(item.getResults() != null){
+                MovieDetails[] movieDetails = new MovieDetails[item.getResults().size()];
+                movieDetailsDao.insertMovieDetails(item.getResults().toArray(movieDetails));
+            }
             }
 
             @Override
             protected boolean shouldFetch(@Nullable List<MovieDetails> data) {
-                return false;
+                return true;
             }
 
             @NonNull
             @Override
             protected LiveData<List<MovieDetails>> loadFromDb() {
-                return null;
+                return movieDetailsDao.loadMovieDetails();
             }
 
             @NonNull
             @Override
             protected LiveData<ApiResponse<MovieDiscoverResponse>> createCall() {
-                return ServiceGenerator.getTMDbApi().discoverMoviesList(Constants.api_key, genre);
+                return ServiceGenerator.getTMDbApi().discoverMoviesList(Constants.api_key, "popularity.desc", "false", "false", "1", 28);
             }
         }.getAsLiveData();
     }
@@ -77,7 +83,7 @@ public class TmDbRepository {
 
             @Override
             protected boolean shouldFetch(@Nullable List<Genre> data) {
-                return false;
+                return true;
             }
 
             @NonNull

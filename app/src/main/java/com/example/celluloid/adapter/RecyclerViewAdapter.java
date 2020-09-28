@@ -19,7 +19,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public static final int GENRE_MOVIE_SELECT = 1;
     public static final int LOADING_TYPE = 5;
 
-
     private List<Genre> mGenre;
     private OnGenreListener mOnGenreListener;
 
@@ -41,7 +40,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.loading_screen_view, parent, false);
                 return new LoadingViewHolder(view);
             default:
-                Log.d(TAG, "onCreateViewHolder: ");
                 LayoutInflater.from(parent.getContext()).inflate(R.layout.loading_screen_view, parent, false);
                 return new LoadingViewHolder(view);
         }
@@ -71,11 +69,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void setGenre(List<Genre> genre) {
-        mGenre = genre;
-        notifyDataSetChanged();
-    }
-
-    public void setMovieList(List<Genre> genre) {
         mGenre = genre;
         notifyDataSetChanged();
     }

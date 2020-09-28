@@ -1,8 +1,11 @@
 package com.example.celluloid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +23,6 @@ import java.util.List;
 public class GenreActivity extends BaseActivity implements OnGenreListener {
 
     private static final String TAG = "GenreActivity";
-    private List<Genre> genres;
     private RecyclerView mRecyclerView;
     MovieDetailsViewModel viewModel;
     RecyclerViewAdapter mAdapter;
@@ -37,24 +39,27 @@ public class GenreActivity extends BaseActivity implements OnGenreListener {
         viewModel.loadGenre().observe(this, new Observer<Resource<List<Genre>>>() {
             @Override
             public void onChanged(Resource<List<Genre>> listResource) {
-                if(listResource != null) {
-                    if(listResource.data != null){
-                        switch (listResource.status){
-                            case LOADING:{
+                if (listResource != null) {
+                    if (listResource.data != null) {
+                        switch (listResource.status) {
+                            case LOADING: {
                                 mAdapter.displayLoading();
                                 break;
                             }
-                            case ERROR:{
-
+                            case ERROR: {
+                                Log.e(TAG, "onChanged: Cannot refresh the cache");
+                                Log.e(TAG, "onChanged: " + listResource.message);
+                                mAdapter.setGenre(listResource.data);
+                                break;
                             }
-                            case SUCCESS:{
+                            case SUCCESS: {
                                 mAdapter.setGenre(listResource.data);
                                 break;
                             }
                         }
                     }
                 }
-            } 
+            }
         });
     }
 
@@ -68,7 +73,9 @@ public class GenreActivity extends BaseActivity implements OnGenreListener {
     }
 
     @Override
-    public void onGenreClick(String genre) {
-
+    public void onGenreClick(int genreId) {
+        Intent intent = new Intent(this, MovieActivity.class);
+        intent.putExtra("genre", genreId);
+        startActivity(intent);
     }
 }

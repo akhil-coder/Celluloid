@@ -19,6 +19,10 @@ public interface TMDbApi {
     @GET("discover/movie")
     LiveData<ApiResponse<MovieDiscoverResponse>> discoverMoviesList(
             @Query("api_key") String apiKey,
+            @Query("sort_by") String sortby,
+            @Query("include_adult") String includeAdult,
+            @Query("include_video") String includeVideo,
+            @Query("page") String page,
             @Query("with_genres") int genres
     );
 }

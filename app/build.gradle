@@ -24,8 +24,10 @@ android {
 
 dependencies {
 
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def retrofitVersion = "2.5.0"
     def lifecycle_version = "1.1.1"
+    def glideVersion = "4.11.0"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -54,5 +56,13 @@ dependencies {
     //CardView
     implementation "androidx.cardview:cardview:1.0.0"
 
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    implementation ("com.github.bumptech.glide:recyclerview-integration:4.11.0") {
+        // Excludes the support library because it's already included by Glide.
+        transitive = false
+    }
 
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
 }
